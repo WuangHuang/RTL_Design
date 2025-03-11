@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-module traffic_light_controller (
+module Traffic_Light_Controller (
     input clk, rst_n, main_sensor, side_sensor,
     output reg [2:0] main_road, 
     output reg [2:0] side_road, 
@@ -25,32 +25,32 @@ begin
     if (~rst_n) 
      begin
         current_state <= S0_MAIN_GREEN; 
-        timer <= 30; 
+        timer <= 5'd30; 
       end 
     else
      begin
      
-       if (timer == 0)
+       if (timer == 5'd0)
         begin
          if (current_state == S0_MAIN_GREEN)
-          timer = !main_sensor ? timer + 5 : 0;  
+          timer <= !main_sensor ? timer + 5'd5 : 5'd0;  
          if (current_state == S2_SIDE_GREEN)
-          timer = !side_sensor ? timer + 5 : 0;
+          timer <= !side_sensor ? timer + 5'd5 : 5'd0;
         end  
         
-         if (timer == 0)
+         if (timer == 5'd0)
             begin     
              current_state = next_state;
               case (next_state)
-               S0_MAIN_GREEN:  timer =  30  ; 
-               S1_MAIN_YELLOW: timer =   3  ; 
-               S2_SIDE_GREEN:  timer =   20 ; 
-               S3_SIDE_YELLOW: timer =   3  ; 
+               S0_MAIN_GREEN:  timer <=   5'd30  ; 
+               S1_MAIN_YELLOW: timer <=   5'd3   ; 
+               S2_SIDE_GREEN:  timer <=   5'd20  ; 
+               S3_SIDE_YELLOW: timer <=   5'd3   ; 
               endcase
             end 
          else  timer <= timer - 1; 
      end   
-    assign  counter = timer;
+      counter <= timer;
 end 
 
 
